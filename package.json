@@ -1,7 +1,11 @@
 {
-  "name": "fastify",
+  "name": "fastify-test-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Robust REST API built with Fastify, TypeScript, MySQL and Drizzle ORM",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
