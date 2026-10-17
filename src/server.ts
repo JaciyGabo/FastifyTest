@@ -1,12 +1,10 @@
 import { buildApp } from './app.js';
+import { env } from './config/env.js';
 
-const PORT = Number(process.env.PORT) || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
-
-const app = await buildApp({ logger: true });
+const app = await buildApp({ logger: { level: env.LOG_LEVEL } });
 
 try {
-  await app.listen({ port: PORT, host: HOST });
+  await app.listen({ port: env.PORT, host: env.HOST });
 } catch (err) {
   app.log.error(err);
   process.exit(1);
