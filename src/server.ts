@@ -2,8 +2,9 @@ import closeWithGrace from 'close-with-grace';
 
 import { buildApp } from './app.js';
 import { env } from './config/env.js';
+import { buildLoggerOptions } from './config/logger.js';
 
-const app = await buildApp({ logger: { level: env.LOG_LEVEL } });
+const app = await buildApp({ logger: buildLoggerOptions(env) });
 
 // Gracefully close on SIGINT/SIGTERM or fatal errors: stop accepting new connections,
 // let in-flight requests finish and run onClose hooks (e.g. DB pool) before exiting.
