@@ -5,7 +5,10 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 
+import { authRoutes } from './modules/auth/auth.routes.js';
 import { healthRoutes } from './modules/health/health.routes.js';
+import { usersRoutes } from './modules/users/users.routes.js';
+import { authPlugin } from './plugins/auth.js';
 import { dbPlugin } from './plugins/db.js';
 import { errorHandlerPlugin } from './plugins/error-handler.js';
 import { securityPlugin } from './plugins/security.js';
@@ -25,12 +28,15 @@ export async function buildApp(options: FastifyServerOptions = {}): Promise<Fast
   await app.register(errorHandlerPlugin);
   await app.register(swaggerPlugin);
   await app.register(dbPlugin);
+  await app.register(authPlugin);
 
   app.get('/', async () => {
     return { mensaje: '¡Hola! El servidor está funcionando' };
   });
 
   await app.register(healthRoutes, { prefix: '/health' });
+  await app.register(authRoutes, { prefix: '/auth' });
+  await app.register(usersRoutes, { prefix: '/users' });
 
   return app;
 }

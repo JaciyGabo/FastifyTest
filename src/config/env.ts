@@ -22,6 +22,18 @@ const envSchema = z.object({
   DATABASE_PASSWORD: z.string().default('fastify_password'),
   DATABASE_NAME: z.string().default('fastify_db'),
   DATABASE_ROOT_PASSWORD: z.string().default('root_password'),
+
+  // Authentication & Secrets
+  JWT_SECRET: z
+    .string()
+    .min(16)
+    .default('development-jwt-secret-key-must-be-at-least-32-characters-long'),
+  COOKIE_SECRET: z
+    .string()
+    .min(16)
+    .default('development-cookie-secret-key-must-be-at-least-32-characters-long'),
+  JWT_EXPIRES_IN: z.string().default('15m'),
+  REFRESH_TOKEN_EXPIRES_DAYS: z.coerce.number().int().positive().default(7),
 });
 
 export type Env = z.infer<typeof envSchema>;
