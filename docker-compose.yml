@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: fastify_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME:-fastify_db}
+      MYSQL_USER: ${DATABASE_USER:-fastify_user}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-fastify_password}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:-root_password}
+    ports:
+      - '${DATABASE_PORT:-3306}:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-proot_password']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+volumes:
+  mysql_data:

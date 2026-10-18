@@ -24,10 +24,16 @@ describe('health endpoints', () => {
 
   it('GET /health/ready returns ok with uptime and timestamp', async () => {
     const response = await app.inject({ method: 'GET', url: '/health/ready' });
-    const body = response.json<{ status: string; uptime: number; timestamp: string }>();
+    const body = response.json<{
+      status: string;
+      uptime: number;
+      timestamp: string;
+      database: string;
+    }>();
 
     expect(response.statusCode).toBe(200);
     expect(body.status).toBe('ok');
+    expect(body.database).toBe('connected');
     expect(body.uptime).toBeTypeOf('number');
     expect(Number.isNaN(Date.parse(body.timestamp))).toBe(false);
   });

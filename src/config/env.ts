@@ -14,6 +14,14 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100),
   RATE_LIMIT_TIME_WINDOW: z.string().default('1 minute'),
+
+  // Database (MySQL)
+  DATABASE_HOST: z.string().default('127.0.0.1'),
+  DATABASE_PORT: z.coerce.number().int().positive().default(3306),
+  DATABASE_USER: z.string().default('fastify_user'),
+  DATABASE_PASSWORD: z.string().default('fastify_password'),
+  DATABASE_NAME: z.string().default('fastify_db'),
+  DATABASE_ROOT_PASSWORD: z.string().default('root_password'),
 });
 
 export type Env = z.infer<typeof envSchema>;

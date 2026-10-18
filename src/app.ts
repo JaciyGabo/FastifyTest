@@ -6,6 +6,7 @@ import {
 } from 'fastify-type-provider-zod';
 
 import { healthRoutes } from './modules/health/health.routes.js';
+import { dbPlugin } from './plugins/db.js';
 import { errorHandlerPlugin } from './plugins/error-handler.js';
 import { securityPlugin } from './plugins/security.js';
 import { swaggerPlugin } from './plugins/swagger.js';
@@ -23,6 +24,7 @@ export async function buildApp(options: FastifyServerOptions = {}): Promise<Fast
   await app.register(securityPlugin);
   await app.register(errorHandlerPlugin);
   await app.register(swaggerPlugin);
+  await app.register(dbPlugin);
 
   app.get('/', async () => {
     return { mensaje: '¡Hola! El servidor está funcionando' };

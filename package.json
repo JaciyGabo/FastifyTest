@@ -18,7 +18,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "docker:db:up": "docker compose up -d db",
+    "docker:db:down": "docker compose down",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
@@ -30,14 +35,17 @@
     "@fastify/swagger": "^9.9.2",
     "@fastify/swagger-ui": "^6.1.2",
     "close-with-grace": "^2.5.0",
+    "drizzle-orm": "^0.45.4",
     "fastify": "^5.12.7",
     "fastify-plugin": "^6.0.1",
     "fastify-type-provider-zod": "^7.0.0",
+    "mysql2": "^3.24.6",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.19.2",
+    "drizzle-kit": "^0.31.11",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
     "pino-pretty": "^13.2.0",
