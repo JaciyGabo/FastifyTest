@@ -70,6 +70,25 @@ describe('Authentication & User Flow', () => {
     expect(res.json()).toHaveProperty('error', 'EMAIL_ALREADY_EXISTS');
   });
 
+  it('POST /auth/register ignores a requested role and always creates a user', async () => {
+    const escalationEmail = `auth_role_${Date.now()}@example.com`;
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/auth/register',
+      payload: {
+        email: escalationEmail,
+        password: testPassword,
+        role: 'admin',
+      },
+    });
+
+    expect(res.statusCode).toBe(201);
+    expect(res.json<{ user: { role: string } }>().user.role).toBe('user');
+
+    await app.db.delete(users).where(eq(users.email, escalationEmail));
+  });
+
   it('POST /auth/login fails on wrong credentials with 401 Unauthorized', async () => {
     const res = await app.inject({
       method: 'POST',

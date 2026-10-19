@@ -44,7 +44,6 @@ export class AuthService {
   async register(params: {
     email: string;
     password: string;
-    role?: 'user' | 'admin';
   }): Promise<{ user: UserWithoutPassword; refreshToken: string }> {
     const existing = await this.usersRepo.findByEmail(params.email.toLowerCase());
     if (existing) {
@@ -55,7 +54,7 @@ export class AuthService {
     const user = await this.usersRepo.create({
       email: params.email.toLowerCase(),
       passwordHash,
-      role: params.role ?? 'user',
+      role: 'user',
     });
 
     const rawRefreshToken = randomBytes(40).toString('hex');
