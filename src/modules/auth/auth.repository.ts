@@ -22,6 +22,20 @@ export class AuthRepository {
     return token;
   }
 
+  /** Finds a token regardless of its state, so reuse of a revoked token can be detected. */
+  async findRefreshTokenByHash(
+    userId: number,
+    tokenHash: string,
+  ): Promise<RefreshToken | undefined> {
+    const results = await this.db
+      .select()
+      .from(refreshTokens)
+      .where(and(eq(refreshTokens.userId, userId), eq(refreshTokens.tokenHash, tokenHash)))
+      .limit(1);
+
+    return results[0];
+  }
+
   async findValidRefreshToken(
     userId: number,
     tokenHash: string,

@@ -105,6 +105,13 @@ export class AuthService {
     const validRecord = await this.authRepo.findValidRefreshToken(params.userId, tokenHash);
 
     if (!validRecord) {
+      // A revoked token that is presented again means it was copied or stolen after
+      // rotation. Revoke every session of the user so the attacker's token stops working.
+      const known = await this.authRepo.findRefreshTokenByHash(params.userId, tokenHash);
+      if (known?.revokedAt) {
+        await this.authRepo.revokeAllUserTokens(params.userId);
+      }
+
       throw new UnauthorizedError(
         'Invalid, expired or revoked refresh token',
         'INVALID_REFRESH_TOKEN',
